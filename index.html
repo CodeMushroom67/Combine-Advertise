@@ -1,0 +1,49 @@
+<html>
+
+<body>
+  <!-- ... Your HTML and CSS -->
+  <input type="text" name="" id="combin1"><br>
+  <input type="text" name="" id="combin2"><br>
+  <button id="combine">COMBİNE!</button>
+  <hr>
+  <iframe style="width: 99vw;height: 700px;" id="iframe" src=""></iframe>
+  <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    // Fetch your API_KEY
+    const API_KEY = "AIzaSyCyYyPy9vi9_3CnQqLWmAJVebJe8Bk_Wes";
+
+    // Access your API key (see "Set up your API key" above)
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
+    // ...
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    async function run(comibned1, comibned2) {
+      // For text-only input, use the gemini-pro model
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+      const prompt =
+        "Welcome to your digital canvas within the confines of an iframe, a space where the mundane morphs into the extraordinary through the power of code. Your mission, should you choose to embrace it, involves two pivotal stages, each a fusion of creativity and technical acumen, all aimed at showcasing any product in the most dazzling light.These two things are " + comibned1 + "and" + comibned2 + ".Stage One - Unleash Your Imagination on a Product: Let's keep the product a variable in this equation, allowing you to focus entirely on the spectacle of presentation. Choose any product, either a whimsical creation from the depths of your imagination or something as everyday as a coffee mug. The spotlight isn't on what the product is, but on how amazingly it's presented.Stage Two - Engineering a Website Spectacle: Your arena is the iframe, and your tools are HTML and CSS. Your challenge is to engineer a website that's a visual and interactive explosion of fun and funkiness, without leaning on external images for impact. Think vibrant colors, dynamic text animations, and playful layouts that make each visitor's experience an unforgettable journey through the essence of your chosen product.Your website should diverge into sections like 'Welcome', 'Why It Rocks', 'Spectacular Features', 'Unbelievable Benefits', and 'Get It Now', each bursting with personality and styled to perfection using CSS directly within your HTML code. Employ CSS animations for text or background effects, use web fonts to bring character to your words, and structure your content to pop off the screen in an array of colors and shapes.Keep in Mind: The finale of your endeavor is the HTML code, refined and ready to command attention within the limited but potent stage of an iframe. This isn't just about making content accessible and visually appealing; it's about crafting an interactive, funky fiesta that celebrates your product in style. When rendered in a web browser, your code should unfurl a website that's not just seen but experienced, a place where every element, from the font choice to the color scheme, tells a part of your product's story with flair.Let the boundaries of the iframe be the only limits to your creativity, and may your code bring to life a website that's as unforgettable as the product it showcases."
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      document.querySelector("#iframe").src = "data:text/html;charset=utf-8," + encodeURIComponent(text.slice(3, -3))
+    }
+    document.querySelector("#combine").addEventListener("click", (e) => {
+      run(document.querySelector('#combin1').value, document.querySelector('#combin2').value);
+    })
+
+  </script>
+</body>
+
+</html>
